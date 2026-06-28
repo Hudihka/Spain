@@ -1,0 +1,105 @@
+[
+  {
+    "id": "0A",
+    "title": "Unidad 0A — Saludos y despedidas",
+    "words": [
+      { "id": "a1", "spanish": "hola", "russian": "привет" },
+      { "id": "a2", "spanish": "buenos días", "russian": "доброе утро" },
+      { "id": "a3", "spanish": "buenas tardes", "russian": "добрый день" },
+      { "id": "a4", "spanish": "buenas noches", "russian": "добрый вечер" },
+      { "id": "a5", "spanish": "adiós", "russian": "прощай" },
+      { "id": "a6", "spanish": "chao", "russian": "пока" },
+      { "id": "a7", "spanish": "nos vemos", "russian": "увидимся" },
+      { "id": "a8", "spanish": "hasta mañana", "russian": "до завтра" },
+      { "id": "a9", "spanish": "hasta luego", "russian": "до скорого" },
+      { "id": "a10", "spanish": "hasta pronto", "russian": "до скорой встречи" },
+      { "id": "a11", "spanish": "mucho gusto", "russian": "приятно познакомиться" },
+      { "id": "a12", "spanish": "¿cómo estás?", "russian": "как дела" },
+      { "id": "a13", "spanish": "bien", "russian": "хорошо" },
+      { "id": "a14", "spanish": "muy bien", "russian": "очень хорошо" },
+      { "id": "a15", "spanish": "mal", "russian": "плохо" },
+      { "id": "a16", "spanish": "regular", "russian": "так себе" },
+      { "id": "a17", "spanish": "por favor", "russian": "пожалуйста" },
+      { "id": "a18", "spanish": "gracias", "russian": "спасибо" },
+      { "id": "a19", "spanish": "de nada", "russian": "не за что" },
+      { "id": "a20", "spanish": "perdón", "russian": "извините" }
+    ]
+  },
+  {
+    "id": "0B",
+    "title": "Unidad 0B — Lugares",
+    "words": [
+      { "id": "b1", "spanish": "la ciudad", "russian": "город" },
+      { "id": "b2", "spanish": "el campo", "russian": "деревня" },
+      { "id": "b3", "spanish": "la casa", "russian": "дом" },
+      { "id": "b4", "spanish": "el centro", "russian": "центр" },
+      { "id": "b5", "spanish": "el teatro", "russian": "театр" },
+      { "id": "b6", "spanish": "el museo", "russian": "музей" },
+      { "id": "b7", "spanish": "el restaurante", "russian": "ресторан" },
+      { "id": "b8", "spanish": "el hotel", "russian": "отель" },
+      { "id": "b9", "spanish": "la estación", "russian": "станция" },
+      { "id": "b10", "spanish": "el metro", "russian": "метро" },
+      { "id": "b11", "spanish": "la cafetería", "russian": "кафе" },
+      { "id": "b12", "spanish": "la biblioteca", "russian": "библиотека" },
+      { "id": "b13", "spanish": "el supermercado", "russian": "супермаркет" },
+      { "id": "b14", "spanish": "la oficina", "russian": "офис" },
+      { "id": "b15", "spanish": "el parque", "russian": "парк" }
+    ]
+  },
+  {
+    "id": "0C",
+    "title": "Unidad 0C — Verbos básicos",
+    "words": [
+      { "id": "c1", "spanish": "ser", "russian": "быть (постоянно)" },
+      { "id": "c2", "spanish": "estar", "russian": "быть (временно)" },
+      { "id": "c3", "spanish": "tener", "russian": "иметь" },
+      { "id": "c4", "spanish": "ir", "russian": "идти" },
+      { "id": "c5", "spanish": "hacer", "russian": "делать" },
+      { "id": "c6", "spanish": "hablar", "russian": "говорить" },
+      { "id": "c7", "spanish": "comer", "russian": "есть" },
+      { "id": "c8", "spanish": "vivir", "russian": "жить" },
+      { "id": "c9", "spanish": "estudiar", "russian": "учиться" },
+      { "id": "c10", "spanish": "trabajar", "russian": "работать" }
+    ]
+  },
+  {
+    "id": "0D",
+    "title": "Unidad 0D — Preguntas",
+    "words": [
+      { "id": "d1", "spanish": "qué", "russian": "что" },
+      { "id": "d2", "spanish": "quién", "russian": "кто" },
+      { "id": "d3", "spanish": "dónde", "russian": "где" },
+      { "id": "d4", "spanish": "cuándo", "russian": "когда" },
+      { "id": "d5", "spanish": "por qué", "russian": "почему" },
+      { "id": "d6", "spanish": "cómo", "russian": "как" },
+      { "id": "d7", "spanish": "cuánto", "russian": "сколько" }
+    ]
+  },
+  {
+    "id": "0E",
+    "title": "Unidad 0E — Adjetivos",
+    "words": [
+      { "id": "e1", "spanish": "grande", "russian": "большой" },
+      { "id": "e2", "spanish": "pequeño", "russian": "маленький" },
+      { "id": "e3", "spanish": "bueno", "russian": "хороший" },
+      { "id": "e4", "spanish": "malo", "russian": "плохой" },
+      { "id": "e5", "spanish": "nuevo", "russian": "новый" },
+      { "id": "e6", "spanish": "viejo", "russian": "старый" },
+      { "id": "e7", "spanish": "bonito", "russian": "красивый" },
+      { "id": "e8", "spanish": "feo", "russian": "уродливый" }
+    ]
+  },
+  {
+    "id": "0F",
+    "title": "Unidad 0F — Comunicación",
+    "words": [
+      { "id": "f1", "spanish": "¿qué eres?", "russian": "кто ты по профессии" },
+      { "id": "f2", "spanish": "¿de dónde eres?", "russian": "откуда ты" },
+      { "id": "f3", "spanish": "¿dónde vives?", "russian": "где ты живёшь" },
+      { "id": "f4", "spanish": "¿qué quieres?", "russian": "что ты хочешь" },
+      { "id": "f5", "spanish": "feliz cumpleaños", "russian": "с днём рождения" },
+      { "id": "f6", "spanish": "¡bravo!", "russian": "молодец" },
+      { "id": "f7", "spanish": "no me digas", "russian": "да ладно" }
+    ]
+  }
+]
