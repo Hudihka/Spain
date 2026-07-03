@@ -37,6 +37,7 @@ struct TopicListView: View {
                     }
                     .pickerStyle(.segmented)
                     .padding(.top, 8)
+                    .padding(.horizontal, 16)
 
                     ScrollView {
 

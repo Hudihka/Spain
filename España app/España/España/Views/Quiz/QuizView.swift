@@ -11,7 +11,6 @@ import SwiftUI
 struct QuizView: View {
 
     private let topic: Topic
-    @StateObject private var store = ProgressStore()
     @StateObject private var vm: QuizViewModel
 
     init(topic: Topic, mode: QuizMode) {
@@ -40,7 +39,6 @@ struct QuizView: View {
                         words: vm.countWords,
                         procent: vm.procent,
                         onRestart: {
-                            store.reset(topic: topic)
                             vm.restart()
                         }
                     )

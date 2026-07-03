@@ -16,20 +16,14 @@ struct TopicCardView: View {
     @AppStorage("quizMode")
     private var quizModeRaw = QuizMode.spanishToRussian.rawValue
 
-    @StateObject
-    private var store = ProgressStore()
-
     @State
     private var isActive = false
-
-    private var progress: Double {
-        store.topicProgress(words: topic.words)
-    }
 
     var body: some View {
         VStack(alignment: .leading, spacing: 10) {
             HStack {
                 Text(topic.title)
+                    .foregroundColor(.black)
                     .font(.headline)
                 Spacer()
                 Text("\(topic.words.count) слов")
@@ -37,8 +31,6 @@ struct TopicCardView: View {
                     .foregroundColor(.gray)
             }
 
-            ProgressView(value: progress)
-                .tint(.green)
             HStack(spacing: 12) {
                 NavigationLink {
                     QuizView(

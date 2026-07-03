@@ -45,14 +45,15 @@ struct VocabularyWordRow: View {
         VStack(alignment: .leading, spacing: 10) {
 
             Text(firstText)
+                .foregroundColor(.black)
                 .font(.title3.bold())
 
             if shouldShowTranslation {
 
                 Text(secondText)
-                    .font(.body)
-                    .foregroundColor(.secondary)
-                    .transition(.opacity)
+                    .font(.title3)
+                    .fontWeight(.medium)
+                    .foregroundColor(.gray)
 
             } else {
 

@@ -20,10 +20,12 @@ struct ResultView: View {
         VStack(spacing: 20) {
 
             Text("🎉 Отлично!")
+                .foregroundColor(.black)
                 .font(.largeTitle)
                 .bold()
 
             Text("Количество слов: \(words)")
+                .foregroundColor(.black)
                 .font(.title2)
 
             Text("Точность: \(procent)%")
