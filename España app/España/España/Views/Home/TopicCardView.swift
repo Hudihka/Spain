@@ -12,12 +12,18 @@ import SwiftUI
 struct TopicCardView: View {
 
     let topic: Topic
+    let quizMode: QuizMode
 
     @State private var isActive = false
 
     var body: some View {
 
-        NavigationLink(destination: QuizView(topic: topic)) {
+        NavigationLink(
+            destination: QuizView(
+                topic: topic,
+                mode: quizMode
+            )
+        ) {
 
             VStack(alignment: .leading, spacing: 10) {
 

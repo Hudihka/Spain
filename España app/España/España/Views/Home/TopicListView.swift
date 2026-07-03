@@ -10,6 +10,14 @@ import SwiftUI
 import Combine
 
 struct TopicListView: View {
+    
+    @AppStorage("quizMode")
+    private var quizModeRaw = QuizMode.spanishToRussian.rawValue
+
+    private var quizMode: QuizMode {
+        get { QuizMode(rawValue: quizModeRaw) ?? .spanishToRussian }
+        set { quizModeRaw = newValue.rawValue }
+    }
 
     private var vm = TopicListViewModel()
 
@@ -23,6 +31,12 @@ struct TopicListView: View {
 
                 VStack(spacing: 16) {
                     header
+                    Picker("", selection: $quizModeRaw) {
+                        Text("🇪🇸 → 🇷🇺").tag(QuizMode.spanishToRussian.rawValue)
+                        Text("🇷🇺 → 🇪🇸").tag(QuizMode.russianToSpanish.rawValue)
+                    }
+                    .pickerStyle(.segmented)
+                    .padding(.top, 8)
 
                     ScrollView {
 
@@ -30,7 +44,7 @@ struct TopicListView: View {
 
                             ForEach(vm.topics) { topic in
 
-                                TopicCardView(topic: topic)
+                                TopicCardView(topic: topic, quizMode: quizMode)
                             }
                         }
                         .padding(.horizontal)

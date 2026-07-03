@@ -14,9 +14,14 @@ struct QuizView: View {
     @StateObject private var store = ProgressStore()
     @StateObject private var vm: QuizViewModel
 
-    init(topic: Topic) {
+    init(topic: Topic, mode: QuizMode) {
         self.topic = topic
-        _vm = StateObject(wrappedValue: QuizViewModel(topic: topic))
+        _vm = StateObject(
+            wrappedValue: QuizViewModel(
+                topic: topic,
+                mode: mode
+            )
+        )
     }
 
 
