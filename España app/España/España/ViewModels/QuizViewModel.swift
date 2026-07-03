@@ -38,7 +38,7 @@ final class QuizViewModel: ObservableObject {
     var procent: Int {
         guard allAnswers != 0 else { return 0 }
         
-        return 100 * (correctAnswers/allAnswers)
+        return Int(100 * Double(correctAnswers)/Double(allAnswers))
     }
     
     var countWords: Int {
@@ -158,7 +158,7 @@ final class QuizViewModel: ObservableObject {
     private func updateProgress() {
         progressText = "Правильно \(correctAnswers) из \(allAnswers), \(procent)%"
         
-        progressView = Double(correctAnswers/allWords.count)
+        progressView = Double(correctAnswers)/Double(allWords.count)
     }
 
     // MARK: - Finish
@@ -171,6 +171,7 @@ final class QuizViewModel: ObservableObject {
 
         correctAnswers = 0
         allAnswers = 0
+        wrongAnswers = 0
         isFinished = false
         answerState = .idle
 
