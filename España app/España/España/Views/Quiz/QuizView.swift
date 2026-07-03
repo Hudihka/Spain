@@ -32,8 +32,8 @@ struct QuizView: View {
 
                 if vm.isFinished {
                     ResultView(
-                        xp: vm.xp,
-                        accuracy: vm.accuracy,
+                        words: vm.countWords,
+                        procent: vm.procent,
                         onRestart: {
                             store.reset(topic: topic)
                             vm.restart()
@@ -63,7 +63,7 @@ struct QuizView: View {
 
         VStack(spacing: 10) {
 
-            ProgressBar(value: Double(vm.accuracy) / 100.0)
+            ProgressBar(value: Double(vm.progressView))
 
             Text(vm.progressText)
                 .font(.subheadline)

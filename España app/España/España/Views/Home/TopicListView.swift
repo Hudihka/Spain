@@ -11,7 +11,7 @@ import Combine
 
 struct TopicListView: View {
 
-    @StateObject private var vm = TopicListViewModel()
+    private var vm = TopicListViewModel()
 
     var body: some View {
 

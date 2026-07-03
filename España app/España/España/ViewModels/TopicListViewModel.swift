@@ -10,10 +10,8 @@ import SwiftUI
 import Combine
 
 final class TopicListViewModel: ObservableObject {
-    @Published var topics: [Topic] = []
-
-    let progressStore = ProgressStore()
-
+    var topics: [Topic] = []
+    
     init() {
         loadTopics()
     }

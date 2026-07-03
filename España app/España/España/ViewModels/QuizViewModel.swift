@@ -17,9 +17,8 @@ final class QuizViewModel: ObservableObject {
     @Published var currentQuestion: QuizQuestion?
     @Published var answerState: AnswerState = .idle
     @Published var progressText: String = ""
-    @Published var accuracy: Int = 0
+    @Published var progressView: Double = 0
     @Published var isFinished: Bool = false
-    @Published var xp: Int = 0
     
 
     // MARK: - Private
@@ -29,41 +28,33 @@ final class QuizViewModel: ObservableObject {
     private let topic: Topic
     private let mode: QuizMode
 
-    private var words: [Word]
-    private var progressMap: [String: LearningProgress]
-
-    private let repetitionService = SpacedRepetitionService.shared
-    private let storage = UserProgressStorage.shared   // ✅ ВОТ ОН, НЕ УБИРАЕМ
+    private var allWords: Set<Word>
+    private var rightsWords: Set<Word> = []
 
     private var correctAnswers = 0
-    private var totalAnswers = 0
+    private var allAnswers = 0
+    private var wrongAnswers = 0
 
-    private var queue: [Word]
-
+    var procent: Int {
+        guard allAnswers != 0 else { return 0 }
+        
+        return 100 * (correctAnswers/allAnswers)
+    }
+    
+    var countWords: Int {
+        allWords.count
+    }
     // MARK: - Init
 
     init(topic: Topic, mode: QuizMode = .spanishToRussian) {
         self.topic = topic
-        self.words = topic.words
+        self.allWords = Set(topic.words)
         self.mode = mode
 
-        self.queue = topic.words.shuffled()
-
-        self.progressMap = storage.load()
-
-        setupMissingProgress()
         loadNextQuestion()
     }
 
     // MARK: - Setup
-
-    private func setupMissingProgress() {
-        for word in words {
-            if progressMap[word.id] == nil {
-                progressMap[word.id] = LearningProgress(wordID: word.id)
-            }
-        }
-    }
 
     // MARK: - Next question
 
@@ -71,7 +62,7 @@ final class QuizViewModel: ObservableObject {
 
         let availableWords = getAvailableWords()
 
-        guard let word = selectNextWord(from: availableWords) else {
+        guard let word = availableWords.randomElement() else {
             finish()
             return
         }
@@ -86,7 +77,7 @@ final class QuizViewModel: ObservableObject {
             options: options
         )
 
-        updateProgressText()
+        updateProgress()
     }
 
     // MARK: - QA
@@ -103,14 +94,9 @@ final class QuizViewModel: ObservableObject {
 
     // MARK: - Words selection
 
-    private func getAvailableWords() -> [Word] {
-        let filtered = words.filter { word in
-            let progress = progressMap[word.id]
-
-            return repetitionService.shouldShow(progress: progress)
-        }
-
-        return filtered.isEmpty ? words : filtered
+    // вопросы на которые не ответили
+    private func getAvailableWords() -> Set<Word> {
+        allWords.subtracting(rightsWords)
     }
 
     private func selectNextWord(from list: [Word]) -> Word? {
@@ -120,8 +106,7 @@ final class QuizViewModel: ObservableObject {
     // MARK: - Options
 
     private func makeOptions(correct: String) -> [String] {
-
-        var pool = words.map {
+        var pool = allWords.map {
             mode == .spanishToRussian ? $0.russian : $0.spanish
         }
 
@@ -135,34 +120,29 @@ final class QuizViewModel: ObservableObject {
     // MARK: - Answer
 
     func selectAnswer(_ answer: String) {
-
         guard !isLocked, let question = currentQuestion else { return }
         isLocked = true
-
-        totalAnswers += 1
 
         let isCorrect = answer == question.correctAnswer
 
         if isCorrect {
+            rightsWords.insert(question.word)
             correctAnswers += 1
-            xp += 10
             answerState = .correct
 
             HapticManager.shared.success()
             AudioManager.shared.success()
         } else {
+            wrongAnswers += 1
             answerState = .incorrect(selected: answer)
 
             HapticManager.shared.error()
             AudioManager.shared.error()
         }
+        
+        allAnswers += 1
 
-        updateLearning(for: question.word, correct: isCorrect)
-
-        updateAccuracy()
-        updateProgressText()
-
-        storage.save(progressMap)   // ✅ ВАЖНО: сохраняем через store
+        updateProgress()
 
         let delay: Double = isCorrect ? 0.3 : 1.5
         
@@ -173,46 +153,24 @@ final class QuizViewModel: ObservableObject {
         }
     }
 
-    // MARK: - Learning
-
-    private func updateLearning(for word: Word, correct: Bool) {
-
-        guard var progress = progressMap[word.id] else { return }
-
-        repetitionService.update(progress: &progress, correct: correct)
-
-        progressMap[word.id] = progress
-    }
-
     // MARK: - Stats
 
-    private func updateAccuracy() {
-
-        guard totalAnswers > 0 else {
-            accuracy = 0
-            return
-        }
-
-        accuracy = Int(Double(correctAnswers) / Double(totalAnswers) * 100)
-    }
-
-    private func updateProgressText() {
-        progressText = "XP: \(xp) • \(accuracy)%"
+    private func updateProgress() {
+        progressText = "Правильно \(correctAnswers) из \(allAnswers), \(procent)%"
+        
+        progressView = Double(correctAnswers/allWords.count)
     }
 
     // MARK: - Finish
 
     private func finish() {
         isFinished = true
-        storage.save(progressMap)   // ✅ сохраняем
     }
     
     func restart() {
 
         correctAnswers = 0
-        totalAnswers = 0
-        xp = 0
-        accuracy = 0
+        allAnswers = 0
         isFinished = false
         answerState = .idle
 

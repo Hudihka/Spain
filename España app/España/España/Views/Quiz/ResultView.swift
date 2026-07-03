@@ -10,8 +10,8 @@ import SwiftUI
 
 struct ResultView: View {
 
-    let xp: Int
-    let accuracy: Int
+    let words: Int
+    let procent: Int
 
     var onRestart: (() -> Void)? = nil
 
@@ -23,10 +23,10 @@ struct ResultView: View {
                 .font(.largeTitle)
                 .bold()
 
-            Text("XP: \(xp)")
+            Text("Количество слов: \(words)")
                 .font(.title2)
 
-            Text("Точность: \(accuracy)%")
+            Text("Точность: \(procent)%")
                 .foregroundColor(.gray)
 
             Button("Пройти заново") {

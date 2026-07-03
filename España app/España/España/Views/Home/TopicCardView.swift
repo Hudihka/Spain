@@ -14,7 +14,6 @@ struct TopicCardView: View {
     let topic: Topic
 
     @State private var isActive = false
-    @StateObject private var store = ProgressStore()
 
     var body: some View {
 
