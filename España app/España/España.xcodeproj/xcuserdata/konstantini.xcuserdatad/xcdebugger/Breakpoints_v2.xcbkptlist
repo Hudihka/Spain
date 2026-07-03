@@ -18,36 +18,6 @@
             endingLineNumber = "43"
             landmarkName = "body"
             landmarkType = "24">
-            <Locations>
-               <Location
-                  uuid = "7F1D2129-2A1C-4446-99B9-FA231A9EA31C - 34128a28e4306e50"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "closure #1 () -&gt; SwiftUI.TupleView&lt;(&lt;&lt;opaque return type of Espan&#x303;a.QuizView.header : some&gt;&gt;.0, SwiftUI._ConditionalContent&lt;Espan&#x303;a.ResultView, SwiftUI.TupleView&lt;(&lt;&lt;opaque return type of Espan&#x303;a.QuizView.questionView : some&gt;&gt;.0, &lt;&lt;opaque return type of Espan&#x303;a.QuizView.optionsView : some&gt;&gt;.0)&gt;&gt;, SwiftUI.Spacer)&gt; in closure #1 () -&gt; SwiftUI.TupleView&lt;(&lt;&lt;opaque return type of Espan&#x303;a.QuizView.background : some&gt;&gt;.0, &lt;&lt;opaque return type of SwiftUI.View.padding(SwiftUI.Edge.Set, Swift.Optional&lt;CoreGraphics.CGFloat&gt;) -&gt; some&gt;&gt;.0)&gt; in Espan&#x303;a.QuizView.body.getter : some"
-                  moduleName = "Espan&#x303;a.debug.dylib"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/konstantini/Desktop/Spain%20app/Espan%CC%83a%20app/Espan%CC%83a/Espan%CC%83a/Views/Quiz/QuizView.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "43"
-                  endingLineNumber = "43">
-               </Location>
-               <Location
-                  uuid = "7F1D2129-2A1C-4446-99B9-FA231A9EA31C - 9ec5dc12ca47811b"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "closure #1 () -&gt; () in closure #1 () -&gt; SwiftUI.TupleView&lt;(&lt;&lt;opaque return type of Espan&#x303;a.QuizView.header : some&gt;&gt;.0, SwiftUI._ConditionalContent&lt;Espan&#x303;a.ResultView, SwiftUI.TupleView&lt;(&lt;&lt;opaque return type of Espan&#x303;a.QuizView.questionView : some&gt;&gt;.0, &lt;&lt;opaque return type of Espan&#x303;a.QuizView.optionsView : some&gt;&gt;.0)&gt;&gt;, SwiftUI.Spacer)&gt; in closure #1 () -&gt; SwiftUI.TupleView&lt;(&lt;&lt;opaque return type of Espan&#x303;a.QuizView.background : some&gt;&gt;.0, &lt;&lt;opaque return type of SwiftUI.View.padding(SwiftUI.Edge.Set, Swift.Optional&lt;CoreGraphics.CGFloat&gt;) -&gt; some&gt;&gt;.0)&gt; in Espan&#x303;a.QuizView.body.getter : some"
-                  moduleName = "Espan&#x303;a.debug.dylib"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/konstantini/Desktop/Spain%20app/Espan%CC%83a%20app/Espan%CC%83a/Espan%CC%83a/Views/Quiz/QuizView.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "43"
-                  endingLineNumber = "43">
-               </Location>
-            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>

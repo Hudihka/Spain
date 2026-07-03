@@ -43,7 +43,6 @@ struct TopicListView: View {
                         VStack(spacing: 14) {
 
                             ForEach(vm.topics) { topic in
-
                                 TopicCardView(topic: topic, quizMode: quizMode)
                             }
                         }

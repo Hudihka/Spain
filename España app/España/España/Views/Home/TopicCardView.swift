@@ -7,57 +7,78 @@
 
 import Foundation
 import SwiftUI
-import SwiftUI
 
 struct TopicCardView: View {
 
     let topic: Topic
     let quizMode: QuizMode
 
-    @State private var isActive = false
+    @AppStorage("quizMode")
+    private var quizModeRaw = QuizMode.spanishToRussian.rawValue
+
+    @StateObject
+    private var store = ProgressStore()
+
+    @State
+    private var isActive = false
+
+    private var progress: Double {
+        store.topicProgress(words: topic.words)
+    }
 
     var body: some View {
+        VStack(alignment: .leading, spacing: 10) {
+            HStack {
+                Text(topic.title)
+                    .font(.headline)
+                Spacer()
+                Text("\(topic.words.count) слов")
+                    .font(.subheadline)
+                    .foregroundColor(.gray)
+            }
 
-        NavigationLink(
-            destination: QuizView(
-                topic: topic,
-                mode: quizMode
-            )
-        ) {
-
-            VStack(alignment: .leading, spacing: 10) {
-
-                HStack {
-
-                    Text(topic.title)
-                        .font(.headline)
-                        .foregroundColor(.black) // 🔥 фикс: защита от invisible text
-
-                    Spacer()
-
-                    Text("\(topic.words.count) слов")
-                        .font(.subheadline)
-                        .foregroundColor(.gray)
+            ProgressView(value: progress)
+                .tint(.green)
+            HStack(spacing: 12) {
+                NavigationLink {
+                    QuizView(
+                        topic: topic,
+                        mode: quizMode
+                    )
+                } label: {
+                    HStack {
+                        Text("Продолжить")
+                        Spacer()
+                        Image(systemName: "chevron.right")
+                    }
+                    .font(.subheadline.weight(.semibold))
+                    .foregroundColor(.blue)
+                    .padding(.vertical, 10)
+                    .padding(.horizontal, 14)
+                    .frame(maxWidth: .infinity)
+                    .background(Color.blue.opacity(0.08))
+                    .cornerRadius(12)
                 }
 
-                HStack {
-
-                    Text("Продолжить")
-                        .font(.subheadline)
-                        .foregroundColor(.blue)
-
-                    Spacer()
-
-                    Image(systemName: "chevron.right")
-                        .foregroundColor(.gray)
+                NavigationLink {
+                    VocabularyView(
+                        topic: topic,
+                        mode: quizMode
+                    )
+                } label: {
+                    Image(systemName: "book.closed.fill")
+                        .font(.title3)
+                        .foregroundColor(.orange)
+                        .frame(width: 48, height: 48)
+                        .background(Color.orange.opacity(0.12))
+                        .clipShape(Circle())
                 }
             }
-            .padding()
-            .background(Color.white) // 🔥 фикс: стабильный background
-            .clipShape(RoundedRectangle(cornerRadius: 18)) // 🔥 вместо cornerRadius
-            .shadow(color: .black.opacity(0.08), radius: 8)
         }
-        .buttonStyle(.plain)
+        .padding()
+        .background(.white)
+        .cornerRadius(18)
+        .shadow(color: .black.opacity(0.08), radius: 8)
         .onLongPressGesture {
             withAnimation {
                 isActive.toggle()
