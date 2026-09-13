@@ -156,7 +156,7 @@ final class QuizViewModel: ObservableObject {
     // MARK: - Stats
 
     private func updateProgress() {
-        progressText = "Правильно \(correctAnswers) из \(allAnswers), \(procent)%"
+        progressText = "Правильно \(correctAnswers) из \(countWords), \(procent)%"
         
         progressView = Double(correctAnswers)/Double(allWords.count)
     }
@@ -172,6 +172,7 @@ final class QuizViewModel: ObservableObject {
         correctAnswers = 0
         allAnswers = 0
         wrongAnswers = 0
+        
         isFinished = false
         answerState = .idle
 
