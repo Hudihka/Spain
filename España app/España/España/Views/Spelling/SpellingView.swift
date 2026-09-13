@@ -36,9 +36,16 @@ struct SpellingView: View {
                     )
                 } else {
                     promptView
-                    assembledRow
+
+                    if vm.state == .revealed {
+                        Text("Вот правильный ответ")
+                            .font(.subheadline.bold())
+                            .foregroundColor(.blue)
+                    }
+
+                    slotsRow
                     Spacer()
-                    availableGrid
+                    availableTilesArea
                 }
 
                 Spacer()
@@ -80,35 +87,38 @@ struct SpellingView: View {
         Text(vm.promptText)
             .font(.system(size: 30, weight: .bold))
             .multilineTextAlignment(.center)
+            .frame(maxWidth: .infinity)
             .padding(.top, 10)
             .transition(.scale)
     }
 
-    private var assembledRow: some View {
-        LazyVGrid(columns: gridColumns, spacing: 10) {
-            ForEach(vm.assembledTiles) { tile in
-                LetterTileView(tile: tile, backgroundColor: assembledColor) {
-                    vm.removeAssembled(tile)
+    private var slotsRow: some View {
+        FlowLayout(spacing: 8, lineSpacing: 8) {
+            ForEach(0..<vm.targetLength, id: \.self) { index in
+                if index < vm.assembledTiles.count {
+                    let tile = vm.assembledTiles[index]
+                    LetterSlotView(character: tile.character, backgroundColor: assembledColor) {
+                        vm.removeAssembled(tile)
+                    }
+                } else {
+                    LetterSlotView(character: nil, backgroundColor: .white)
                 }
             }
         }
-        .frame(minHeight: 56)
+        .frame(maxWidth: .infinity)
         .animation(.spring(), value: vm.assembledTiles)
     }
 
-    private var availableGrid: some View {
-        LazyVGrid(columns: gridColumns, spacing: 10) {
+    private var availableTilesArea: some View {
+        FlowLayout(spacing: 10, lineSpacing: 10) {
             ForEach(vm.availableTiles) { tile in
                 LetterTileView(tile: tile, backgroundColor: .white) {
                     vm.selectAvailable(tile)
                 }
             }
         }
+        .frame(maxWidth: .infinity)
         .animation(.spring(), value: vm.availableTiles)
-    }
-
-    private var gridColumns: [GridItem] {
-        [GridItem(.adaptive(minimum: 44), spacing: 10)]
     }
 
     private var assembledColor: Color {
@@ -119,6 +129,8 @@ struct SpellingView: View {
             return Color.green.opacity(0.3)
         case .failure:
             return Color.red.opacity(0.3)
+        case .revealed:
+            return Color.blue.opacity(0.25)
         }
     }
 }

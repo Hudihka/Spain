@@ -11,14 +11,18 @@ enum SpellingState: Equatable {
     case idle
     case success
     case failure
+    case revealed
 }
 
 @MainActor
 final class SpellingViewModel: ObservableObject {
 
+    private static let maxAttemptsBeforeReveal = 5
+
     // MARK: - Public state
 
     @Published var promptText: String = ""
+    @Published var targetLength: Int = 0
     @Published var availableTiles: [LetterTile] = []
     @Published var assembledTiles: [LetterTile] = []
     @Published var state: SpellingState = .idle
@@ -33,6 +37,7 @@ final class SpellingViewModel: ObservableObject {
     private var solvedWordIDs: Set<String> = []
     private var lastWordID: String?
     private var isLocked = false
+    private var wrongAttemptsForCurrentWord = 0
 
     private var correctCount = 0
     private var attemptsCount = 0
@@ -75,8 +80,10 @@ final class SpellingViewModel: ObservableObject {
         lastWordID = word.id
         currentWord = word
         promptText = word.russian
+        wrongAttemptsForCurrentWord = 0
 
         let target = Self.normalizedLetters(from: word.spanish)
+        targetLength = target.count
         availableTiles = Self.makeTiles(target: target)
         assembledTiles = []
         state = .idle
@@ -87,24 +94,16 @@ final class SpellingViewModel: ObservableObject {
     // MARK: - Letters
 
     private static func normalizedLetters(from spanish: String) -> [Character] {
-        let trimmed = spanish
-            .trimmingCharacters(in: CharacterSet(charactersIn: "¡¿?!"))
-            .lowercased()
-        return Array(trimmed)
+        Array(
+            spanish
+                .trimmingCharacters(in: CharacterSet(charactersIn: "¡¿?!"))
+                .lowercased()
+        )
     }
 
+    // Без букв-обманок — только буквы самого слова, перемешанные.
     private static func makeTiles(target: [Character]) -> [LetterTile] {
-
-        let decoyPool: [Character] = Array("abcdefghijklmnopqrstuvwxyzñáéíóú")
-        let extraCount = target.count <= 4 ? 2 : 3
-
-        let decoys = decoyPool
-            .filter { !target.contains($0) }
-            .shuffled()
-            .prefix(extraCount)
-
-        let all = target + decoys
-        return all.map { LetterTile(character: $0) }.shuffled()
+        target.map { LetterTile(character: $0) }.shuffled()
     }
 
     // MARK: - Interaction
@@ -113,6 +112,8 @@ final class SpellingViewModel: ObservableObject {
 
         guard !isLocked, state == .idle else { return }
         guard let index = availableTiles.firstIndex(of: tile) else { return }
+
+        HapticManager.shared.selection()
 
         availableTiles.remove(at: index)
         assembledTiles.append(tile)
@@ -124,6 +125,8 @@ final class SpellingViewModel: ObservableObject {
 
         guard !isLocked, state == .idle else { return }
         guard let index = assembledTiles.firstIndex(of: tile) else { return }
+
+        HapticManager.shared.selection()
 
         assembledTiles.remove(at: index)
         availableTiles.append(tile)
@@ -144,7 +147,7 @@ final class SpellingViewModel: ObservableObject {
         if assembled == target {
             handleSuccess(for: word)
         } else {
-            handleFailure(for: word)
+            handleFailure(for: word, target: target)
         }
     }
 
@@ -166,24 +169,42 @@ final class SpellingViewModel: ObservableObject {
         }
     }
 
-    private func handleFailure(for word: Word) {
+    private func handleFailure(for word: Word, target: [Character]) {
 
-        state = .failure
+        wrongAttemptsForCurrentWord += 1
 
         WordProgressStore.shared.recordAnswer(for: word, correct: false)
         HapticManager.shared.error()
         AudioManager.shared.error()
 
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.9) { [weak self] in
-            guard let self else { return }
+        if wrongAttemptsForCurrentWord >= Self.maxAttemptsBeforeReveal {
+            revealAnswer(target: target)
+        } else {
+            state = .failure
 
-            withAnimation {
-                self.availableTiles.append(contentsOf: self.assembledTiles)
-                self.assembledTiles.removeAll()
-                self.state = .idle
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.9) { [weak self] in
+                guard let self else { return }
+
+                withAnimation {
+                    self.availableTiles.append(contentsOf: self.assembledTiles)
+                    self.assembledTiles.removeAll()
+                    self.state = .idle
+                }
+
+                self.isLocked = false
             }
+        }
+    }
 
-            self.isLocked = false
+    private func revealAnswer(target: [Character]) {
+
+        state = .revealed
+        assembledTiles = target.map { LetterTile(character: $0) }
+        availableTiles = []
+
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.8) { [weak self] in
+            self?.isLocked = false
+            self?.loadNextWord()
         }
     }
 

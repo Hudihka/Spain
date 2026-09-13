@@ -105,8 +105,9 @@ struct StatisticsView: View {
 
         LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())], spacing: 14) {
             statTile(title: "Всего слов", value: "\(totalWords)", color: .blue)
-            statTile(title: "Выучено", value: "\(mastered)", color: .green)
+            statTile(title: "Новые", value: "\(newWords)", color: .gray)
             statTile(title: "В процессе", value: "\(learning)", color: .orange)
+            statTile(title: "Выучено", value: "\(mastered)", color: .green)
             statTile(title: "Точность", value: "\(accuracy)%", color: .purple)
         }
     }
