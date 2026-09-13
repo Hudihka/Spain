@@ -9,9 +9,38 @@ import SwiftUI
 
 @main
 struct SpanishTrainerApp: App {
+    @State private var isReady = false
+
     var body: some Scene {
         WindowGroup {
-            TopicListView()
+            Group {
+                if isReady {
+                    TopicListView()
+                } else {
+                    SplashView()
+                }
+            }
+            .task {
+                try? await Task.sleep(for: .seconds(2))
+                isReady = true
+            }
         }
+    }
+}
+
+
+struct SplashView: View {
+    var body: some View {
+        GeometryReader { geometry in
+            Image("latin")
+                .resizable()
+                .scaledToFill()
+                .frame(
+                    width: geometry.size.width,
+                    height: geometry.size.height
+                )
+                .clipped()
+        }
+        .ignoresSafeArea()
     }
 }

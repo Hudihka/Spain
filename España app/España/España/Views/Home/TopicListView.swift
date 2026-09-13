@@ -79,7 +79,7 @@ struct TopicListView: View {
                 .font(.largeTitle)
                 .bold()
 
-            Text("Учись испанский, что бы встречаться с латинкой")
+            Text("Учи испанский, что бы встречаться с латинкой")
                 .foregroundColor(.gray)
         }
         .frame(maxWidth: .infinity, alignment: .leading)
