@@ -65,6 +65,17 @@ struct TopicCardView: View {
                         .background(Color.orange.opacity(0.12))
                         .clipShape(Circle())
                 }
+
+                NavigationLink {
+                    SpellingView(topic: topic)
+                } label: {
+                    Image(systemName: "textformat.abc")
+                        .font(.title3)
+                        .foregroundColor(.purple)
+                        .frame(width: 48, height: 48)
+                        .background(Color.purple.opacity(0.12))
+                        .clipShape(Circle())
+                }
             }
         }
         .padding()

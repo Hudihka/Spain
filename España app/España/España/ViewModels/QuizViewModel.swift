@@ -30,6 +30,7 @@ final class QuizViewModel: ObservableObject {
 
     private var allWords: Set<Word>
     private var rightsWords: Set<Word> = []
+    private var lastWordID: String?
 
     private var correctAnswers = 0
     private var allAnswers = 0
@@ -60,12 +61,14 @@ final class QuizViewModel: ObservableObject {
 
     func loadNextQuestion() {
 
-        let availableWords = getAvailableWords()
+        let availableWords = Array(getAvailableWords())
 
-        guard let word = availableWords.randomElement() else {
+        guard let word = WordProgressStore.shared.pickWord(from: availableWords, avoiding: lastWordID) else {
             finish()
             return
         }
+
+        lastWordID = word.id
 
         let (prompt, answer) = makeQA(for: word)
         let options = makeOptions(correct: answer)
@@ -97,10 +100,6 @@ final class QuizViewModel: ObservableObject {
     // вопросы на которые не ответили
     private func getAvailableWords() -> Set<Word> {
         allWords.subtracting(rightsWords)
-    }
-
-    private func selectNextWord(from list: [Word]) -> Word? {
-        list.randomElement()
     }
 
     // MARK: - Options
@@ -139,7 +138,9 @@ final class QuizViewModel: ObservableObject {
             HapticManager.shared.error()
             AudioManager.shared.error()
         }
-        
+
+        WordProgressStore.shared.recordAnswer(for: question.word, correct: isCorrect)
+
         allAnswers += 1
 
         updateProgress()
@@ -172,7 +173,10 @@ final class QuizViewModel: ObservableObject {
         correctAnswers = 0
         allAnswers = 0
         wrongAnswers = 0
-        
+
+        rightsWords.removeAll()
+        lastWordID = nil
+
         isFinished = false
         answerState = .idle
 

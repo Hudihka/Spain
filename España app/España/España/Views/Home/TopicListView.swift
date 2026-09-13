@@ -19,7 +19,7 @@ struct TopicListView: View {
         set { quizModeRaw = newValue.rawValue }
     }
 
-    private var vm = TopicListViewModel()
+    @StateObject private var vm = TopicListViewModel()
 
     var body: some View {
 
@@ -43,6 +43,8 @@ struct TopicListView: View {
 
                         VStack(spacing: 14) {
 
+                            allWordsCard
+
                             ForEach(vm.topics) { topic in
                                 TopicCardView(topic: topic, quizMode: quizMode)
                             }
@@ -56,6 +58,57 @@ struct TopicListView: View {
             .navigationTitle("")
             .navigationBarHidden(true)
         }
+    }
+
+    private var allWordsCard: some View {
+
+        VStack(alignment: .leading, spacing: 10) {
+
+            HStack {
+                Text("🧠 Все слова")
+                    .foregroundColor(.black)
+                    .font(.headline)
+                Spacer()
+                Text("\(vm.allWordsTopic.words.count) слов")
+                    .font(.subheadline)
+                    .foregroundColor(.gray)
+            }
+
+            HStack(spacing: 12) {
+
+                NavigationLink {
+                    QuizView(topic: vm.allWordsTopic, mode: quizMode)
+                } label: {
+                    Label("Тест", systemImage: "questionmark.circle.fill")
+                        .font(.subheadline.weight(.semibold))
+                        .frame(maxWidth: .infinity)
+                        .padding(.vertical, 10)
+                }
+
+                NavigationLink {
+                    SpellingView(topic: vm.allWordsTopic)
+                } label: {
+                    Label("Буквы", systemImage: "textformat.abc")
+                        .font(.subheadline.weight(.semibold))
+                        .frame(maxWidth: .infinity)
+                        .padding(.vertical, 10)
+                }
+            }
+            .foregroundColor(.white)
+            .background(Color.white.opacity(0.18))
+            .cornerRadius(12)
+        }
+        .padding()
+        .background(
+            LinearGradient(
+                colors: [Color.blue, Color.purple],
+                startPoint: .topLeading,
+                endPoint: .bottomTrailing
+            )
+        )
+        .foregroundColor(.white)
+        .cornerRadius(18)
+        .shadow(color: .black.opacity(0.12), radius: 8)
     }
 
     private var background: some View {
@@ -73,16 +126,30 @@ struct TopicListView: View {
 
     private var header: some View {
 
-        VStack(alignment: .leading, spacing: 6) {
+        HStack(alignment: .top) {
 
-            Text("🇪🇸 Лучше чем ваша платформа")
-                .font(.largeTitle)
-                .bold()
+            VStack(alignment: .leading, spacing: 6) {
 
-            Text("Учи испанский, что бы встречаться с латинкой")
-                .foregroundColor(.gray)
+                Text("🇪🇸 Лучше чем ваша платформа")
+                    .font(.largeTitle)
+                    .bold()
+
+                Text("Учи испанский, что бы встречаться с латинкой")
+                    .foregroundColor(.gray)
+            }
+            .frame(maxWidth: .infinity, alignment: .leading)
+
+            NavigationLink {
+                StatisticsView(topics: vm.topics)
+            } label: {
+                Image(systemName: "chart.bar.fill")
+                    .font(.title2)
+                    .foregroundColor(.blue)
+                    .frame(width: 44, height: 44)
+                    .background(Color.blue.opacity(0.1))
+                    .clipShape(Circle())
+            }
         }
-        .frame(maxWidth: .infinity, alignment: .leading)
         .padding(.horizontal)
     }
 }
