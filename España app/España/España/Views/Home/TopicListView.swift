@@ -20,6 +20,7 @@ struct TopicListView: View {
     }
 
     @StateObject private var vm = TopicListViewModel()
+    @ObservedObject private var progressStore = WordProgressStore.shared
 
     var body: some View {
 
@@ -45,11 +46,13 @@ struct TopicListView: View {
 
                             allWordsCard
 
-                            ForEach(vm.topics) { topic in
+                            ForEach(vm.sortedTopics) { topic in
                                 TopicCardView(topic: topic, quizMode: quizMode)
                             }
                         }
                         .padding(.horizontal)
+                        // Пересчитываем порядок тем при изменении статистики ответов.
+                        .id(progressStore.progressByWordID.count)
                     }
 
                 }
@@ -71,7 +74,7 @@ struct TopicListView: View {
                 Spacer()
                 Text("\(vm.allWordsTopic.words.count) слов")
                     .font(.subheadline)
-                    .foregroundColor(.gray)
+                    .foregroundColor(.white.opacity(0.85))
             }
 
             HStack(spacing: 12) {

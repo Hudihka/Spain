@@ -44,6 +44,12 @@ struct SpellingView: View {
                     }
 
                     slotsRow
+
+                    if !vm.assembledTiles.isEmpty && vm.state == .idle {
+                        resetButton
+                            .padding(.top, 16)
+                    }
+
                     Spacer()
                     availableTilesArea
                 }
@@ -107,6 +113,21 @@ struct SpellingView: View {
         }
         .frame(maxWidth: .infinity)
         .animation(.spring(), value: vm.assembledTiles)
+    }
+
+    private var resetButton: some View {
+        Button {
+            vm.resetCurrentWord()
+        } label: {
+            Label("Начать заново", systemImage: "arrow.counterclockwise")
+                .font(.headline)
+                .foregroundColor(.white)
+                .padding(.horizontal, 24)
+                .padding(.vertical, 14)
+                .background(Color.orange)
+                .clipShape(Capsule())
+                .shadow(color: Color.orange.opacity(0.35), radius: 8, y: 4)
+        }
     }
 
     private var availableTilesArea: some View {

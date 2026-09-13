@@ -132,6 +132,20 @@ final class SpellingViewModel: ObservableObject {
         availableTiles.append(tile)
     }
 
+    /// Вернуть все набранные буквы назад и начать сборку текущего слова заново.
+    func resetCurrentWord() {
+
+        guard !isLocked, state == .idle, !assembledTiles.isEmpty else { return }
+
+        HapticManager.shared.selection()
+
+        withAnimation {
+            availableTiles.append(contentsOf: assembledTiles)
+            assembledTiles.removeAll()
+            availableTiles.shuffle()
+        }
+    }
+
     private func checkIfNeeded() {
 
         guard let word = currentWord else { return }

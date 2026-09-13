@@ -21,7 +21,7 @@ struct SpanishTrainerApp: App {
                 }
             }
             .task {
-                try? await Task.sleep(for: .seconds(2))
+                try? await Task.sleep(for: .milliseconds(1500))
                 isReady = true
             }
         }

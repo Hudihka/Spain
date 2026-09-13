@@ -46,6 +46,14 @@ struct StatisticsView: View {
         store.hardestWords(from: allWords, limit: 10)
     }
 
+    // Темы, по которым уже есть хоть какой-то прогресс — темы без единой
+    // попытки в списке не показываем, чтобы не плодить пустые строки "0/N".
+    private var startedTopics: [Topic] {
+        topics.filter { topic in
+            topic.words.contains { !store.progress(for: $0).isNew }
+        }
+    }
+
     var body: some View {
 
         ZStack {
@@ -62,7 +70,9 @@ struct StatisticsView: View {
                         hardestSection
                     }
 
-                    topicsSection
+                    if !startedTopics.isEmpty {
+                        topicsSection
+                    }
                 }
                 .padding()
             }
@@ -170,7 +180,7 @@ struct StatisticsView: View {
             Text("По темам")
                 .font(.headline)
 
-            ForEach(topics) { topic in
+            ForEach(startedTopics) { topic in
 
                 let topicMastered = store.masteredCount(for: topic.words)
 
