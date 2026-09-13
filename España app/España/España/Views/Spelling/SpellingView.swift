@@ -39,19 +39,24 @@ struct SpellingView: View {
 
                     if vm.state == .revealed {
                         Text("Вот правильный ответ")
-                            .font(.subheadline.bold())
+                            .font(.title2.bold())
                             .foregroundColor(.blue)
                     }
 
                     slotsRow
 
-                    if !vm.assembledTiles.isEmpty && vm.state == .idle {
+                    if vm.state == .success || vm.state == .revealed {
+                        nextWordButton
+                            .padding(.top, 16)
+                    } else if !vm.assembledTiles.isEmpty && vm.state == .idle {
                         resetButton
                             .padding(.top, 16)
                     }
 
                     Spacer()
+
                     availableTilesArea
+                        .frame(height: reservedTilesHeight, alignment: .top)
                 }
 
                 Spacer()
@@ -138,8 +143,36 @@ struct SpellingView: View {
                 }
             }
         }
-        .frame(maxWidth: .infinity)
+        .frame(maxWidth: .infinity, alignment: .top)
         .animation(.spring(), value: vm.availableTiles)
+    }
+
+    private var nextWordButton: some View {
+        Button {
+            vm.proceedToNextWord()
+        } label: {
+            Label("Дальше", systemImage: "arrow.right.circle.fill")
+                .font(.headline)
+                .foregroundColor(.white)
+                .padding(.horizontal, 28)
+                .padding(.vertical, 14)
+                .background(vm.state == .success ? Color.green : Color.blue)
+                .clipShape(Capsule())
+                .shadow(color: (vm.state == .success ? Color.green : Color.blue).opacity(0.35), radius: 8, y: 4)
+        }
+    }
+
+    // Резервируем высоту под буквы исходя из длины ТЕКУЩЕГО слова, чтобы
+    // блок не "съезжал" по мере того, как буквы разбираются на слоты.
+    private var reservedTilesHeight: CGFloat {
+        let itemSize: CGFloat = 44
+        let spacing: CGFloat = 10
+        let assumedRowWidth: CGFloat = 340
+
+        let perRow = max(Int((assumedRowWidth + spacing) / (itemSize + spacing)), 1)
+        let rows = max(Int(ceil(Double(vm.targetLength) / Double(perRow))), 1)
+
+        return CGFloat(rows) * itemSize + CGFloat(max(rows - 1, 0)) * spacing
     }
 
     private var assembledColor: Color {

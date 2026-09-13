@@ -177,10 +177,8 @@ final class SpellingViewModel: ObservableObject {
 
         updateProgress()
 
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.9) { [weak self] in
-            self?.isLocked = false
-            self?.loadNextWord()
-        }
+        // Дальше — по нажатию кнопки, а не по таймеру, чтобы результат
+        // нельзя было случайно "проскочить".
     }
 
     private func handleFailure(for word: Word, target: [Character]) {
@@ -216,10 +214,15 @@ final class SpellingViewModel: ObservableObject {
         assembledTiles = target.map { LetterTile(character: $0) }
         availableTiles = []
 
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1.8) { [weak self] in
-            self?.isLocked = false
-            self?.loadNextWord()
-        }
+        // Ответ остаётся на экране, пока пользователь сам не нажмёт "Дальше".
+    }
+
+    /// Переход к следующему слову после успеха или показа правильного ответа —
+    /// только по явному действию пользователя.
+    func proceedToNextWord() {
+        guard state == .success || state == .revealed else { return }
+        isLocked = false
+        loadNextWord()
     }
 
     // MARK: - Progress

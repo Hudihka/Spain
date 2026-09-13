@@ -130,8 +130,8 @@ struct StatisticsView: View {
                 .foregroundColor(color)
 
             Text(title)
-                .font(.caption)
-                .foregroundColor(.gray)
+                .font(.subheadline.weight(.semibold))
+                .foregroundColor(.black)
         }
         .frame(maxWidth: .infinity, alignment: .leading)
         .padding()
@@ -163,7 +163,7 @@ struct StatisticsView: View {
                     Spacer()
 
                     Text("\(entry.progress.wrongCount) ошибок")
-                        .font(.caption)
+                        .font(.body.bold())
                         .foregroundColor(.red)
                 }
                 .padding()
@@ -184,16 +184,18 @@ struct StatisticsView: View {
 
                 let topicMastered = store.masteredCount(for: topic.words)
 
-                HStack {
+                VStack(alignment: .leading, spacing: 8) {
+
                     Text(topic.title)
-                        .font(.subheadline)
+                        .font(.subheadline.weight(.semibold))
+                        .foregroundColor(.black)
+                        .fixedSize(horizontal: false, vertical: true)
 
-                    Spacer()
-
-                    Text("\(topicMastered)/\(topic.words.count)")
+                    Text("Выучено \(topicMastered) из \(topic.words.count)")
                         .font(.subheadline.bold())
                         .foregroundColor(.blue)
                 }
+                .frame(maxWidth: .infinity, alignment: .leading)
                 .padding()
                 .background(.white)
                 .cornerRadius(14)
